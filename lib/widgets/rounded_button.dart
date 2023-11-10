@@ -17,7 +17,8 @@ class RoundedButton extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.green,  // Change this line to set the button color to green
+        color:
+            Colors.green, // Change this line to set the button color to green
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: TextButton(
@@ -32,7 +33,6 @@ class RoundedButton extends StatelessWidget {
           ),
         ),
       ),
-
     );
   }
 }

@@ -13,7 +13,40 @@
     },
     "categories": {
       "auth": {
-        "riceupf0102ae6": {}
+        "riceupf0102ae6": {},
+        "smartlistapp71fa9b1b": {}
+      }
+    }
+  },
+  "main": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-smartlistapp-main-154825-authRole",
+      "UnauthRoleArn": "arn:aws:iam::456561060854:role/amplify-smartlistapp-main-154825-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::456561060854:role/amplify-smartlistapp-main-154825-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-smartlistapp-main-154825-deployment",
+      "UnauthRoleName": "amplify-smartlistapp-main-154825-unauthRole",
+      "StackName": "amplify-smartlistapp-main-154825",
+      "StackId": "arn:aws:cloudformation:us-east-1:456561060854:stack/amplify-smartlistapp-main-154825/806ce8b0-7e3d-11ee-bd30-0aeca597410f",
+      "AmplifyAppId": "d15ijoiapb7uqn"
+    },
+    "categories": {
+      "auth": {
+        "smartlistapp71fa9b1b": {}
+      },
+      "api": {
+        "smartlistapp": {}
+      },
+      "function": {
+        "CRUD": {},
+        "SmartList1Triggere0c40a2a": {
+          "deploymentBucketName": "amplify-smartlistapp-main-154825-deployment",
+          "s3Key": "amplify-builds/SmartList1Triggere0c40a2a-77365254472b5156336a-build.zip"
+        }
+      },
+      "storage": {
+        "s3smartlistappstoragegroup1": {},
+        "SmartList1": {}
       }
     }
   }

@@ -1,0 +1,16 @@
+type Todo
+  @model
+  @auth(
+    rules: [
+      # Allow the owner of the Todo to perform CRUD operations
+      { allow: owner, operations: [create, read, update, delete] }
+      # Allow users with the "admin" role to perform CRUD operations
+      { allow: groups, groups: ["admin"], operations: [create, read, update, delete] }
+    ]
+  ) {
+  id: ID!
+  username: String!
+  email: String!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}

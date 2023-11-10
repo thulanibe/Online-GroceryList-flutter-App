@@ -101,5 +101,3 @@ class _TextInputState extends State<TextInput> {
     );
   }
 }
-
-

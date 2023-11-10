@@ -22,7 +22,6 @@
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
-
 /** This is an auto generated class representing the Reading type in your schema. */
 @immutable
 class Reading extends Model {
@@ -36,208 +35,240 @@ class Reading extends Model {
 
   @override
   getInstanceType() => classType;
-  
-  @Deprecated('[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
+
+  @Deprecated(
+      '[getId] is being deprecated in favor of custom primary key feature. Use getter [modelIdentifier] to get model identifier.')
   @override
   String getId() => modelIdentifier.serializeAsString();
-  
+
   ReadingModelIdentifier get modelIdentifier {
     try {
       return ReadingModelIdentifier(
-        device_id: _device_id!,
-        timestamp: _timestamp!
-      );
-    } catch(e) {
+          device_id: _device_id!, timestamp: _timestamp!);
+    } catch (e) {
       throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
+          AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
     }
   }
-  
+
   String get device_id {
     try {
       return _device_id!;
-    } catch(e) {
+    } catch (e) {
       throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
+          AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
     }
   }
-  
+
   int get timestamp {
     try {
       return _timestamp!;
-    } catch(e) {
+    } catch (e) {
       throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
+          AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion: AmplifyExceptionMessages
+              .codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString());
     }
   }
-  
+
   double? get temperature {
     return _temperature;
   }
-  
+
   double? get moisture {
     return _moisture;
   }
-  
+
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
-  
+
   TemporalDateTime? get updatedAt {
     return _updatedAt;
   }
-  
-  const Reading._internal({required device_id, required timestamp, temperature, moisture, createdAt, updatedAt}): _device_id = device_id, _timestamp = timestamp, _temperature = temperature, _moisture = moisture, _createdAt = createdAt, _updatedAt = updatedAt;
-  
-  factory Reading({required String device_id, required int timestamp, double? temperature, double? moisture}) {
+
+  const Reading._internal(
+      {required device_id,
+      required timestamp,
+      temperature,
+      moisture,
+      createdAt,
+      updatedAt})
+      : _device_id = device_id,
+        _timestamp = timestamp,
+        _temperature = temperature,
+        _moisture = moisture,
+        _createdAt = createdAt,
+        _updatedAt = updatedAt;
+
+  factory Reading(
+      {required String device_id,
+      required int timestamp,
+      double? temperature,
+      double? moisture}) {
     return Reading._internal(
-      device_id: device_id,
-      timestamp: timestamp,
-      temperature: temperature,
-      moisture: moisture);
+        device_id: device_id,
+        timestamp: timestamp,
+        temperature: temperature,
+        moisture: moisture);
   }
-  
+
   bool equals(Object other) {
     return this == other;
   }
-  
+
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is Reading &&
-      _device_id == other._device_id &&
-      _timestamp == other._timestamp &&
-      _temperature == other._temperature &&
-      _moisture == other._moisture;
+        _device_id == other._device_id &&
+        _timestamp == other._timestamp &&
+        _temperature == other._temperature &&
+        _moisture == other._moisture;
   }
-  
+
   @override
   int get hashCode => toString().hashCode;
-  
+
   @override
   String toString() {
     var buffer = new StringBuffer();
-    
+
     buffer.write("Reading {");
     buffer.write("device_id=" + "$_device_id" + ", ");
-    buffer.write("timestamp=" + (_timestamp != null ? _timestamp!.toString() : "null") + ", ");
-    buffer.write("temperature=" + (_temperature != null ? _temperature!.toString() : "null") + ", ");
-    buffer.write("moisture=" + (_moisture != null ? _moisture!.toString() : "null") + ", ");
-    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
-    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
+    buffer.write("timestamp=" +
+        (_timestamp != null ? _timestamp!.toString() : "null") +
+        ", ");
+    buffer.write("temperature=" +
+        (_temperature != null ? _temperature!.toString() : "null") +
+        ", ");
+    buffer.write("moisture=" +
+        (_moisture != null ? _moisture!.toString() : "null") +
+        ", ");
+    buffer.write("createdAt=" +
+        (_createdAt != null ? _createdAt!.format() : "null") +
+        ", ");
+    buffer.write(
+        "updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
-    
+
     return buffer.toString();
   }
-  
+
   Reading copyWith({double? temperature, double? moisture}) {
     return Reading._internal(
-      device_id: device_id,
-      timestamp: timestamp,
-      temperature: temperature ?? this.temperature,
-      moisture: moisture ?? this.moisture);
+        device_id: device_id,
+        timestamp: timestamp,
+        temperature: temperature ?? this.temperature,
+        moisture: moisture ?? this.moisture);
   }
-  
-  Reading.fromJson(Map<String, dynamic> json)  
-    : _device_id = json['device_id'],
-      _timestamp = (json['timestamp'] as num?)?.toInt(),
-      _temperature = (json['temperature'] as num?)?.toDouble(),
-      _moisture = (json['moisture'] as num?)?.toDouble(),
-      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
-  
-  Map<String, dynamic> toJson() => {
-    'device_id': _device_id, 'timestamp': _timestamp, 'temperature': _temperature, 'moisture': _moisture, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
-  };
-  
-  Map<String, Object?> toMap() => {
-    'device_id': _device_id, 'timestamp': _timestamp, 'temperature': _temperature, 'moisture': _moisture, 'createdAt': _createdAt, 'updatedAt': _updatedAt
-  };
 
-  static final QueryModelIdentifier<ReadingModelIdentifier> MODEL_IDENTIFIER = QueryModelIdentifier<ReadingModelIdentifier>();
+  Reading.fromJson(Map<String, dynamic> json)
+      : _device_id = json['device_id'],
+        _timestamp = (json['timestamp'] as num?)?.toInt(),
+        _temperature = (json['temperature'] as num?)?.toDouble(),
+        _moisture = (json['moisture'] as num?)?.toDouble(),
+        _createdAt = json['createdAt'] != null
+            ? TemporalDateTime.fromString(json['createdAt'])
+            : null,
+        _updatedAt = json['updatedAt'] != null
+            ? TemporalDateTime.fromString(json['updatedAt'])
+            : null;
+
+  Map<String, dynamic> toJson() => {
+        'device_id': _device_id,
+        'timestamp': _timestamp,
+        'temperature': _temperature,
+        'moisture': _moisture,
+        'createdAt': _createdAt?.format(),
+        'updatedAt': _updatedAt?.format()
+      };
+
+  Map<String, Object?> toMap() => {
+        'device_id': _device_id,
+        'timestamp': _timestamp,
+        'temperature': _temperature,
+        'moisture': _moisture,
+        'createdAt': _createdAt,
+        'updatedAt': _updatedAt
+      };
+
+  static final QueryModelIdentifier<ReadingModelIdentifier> MODEL_IDENTIFIER =
+      QueryModelIdentifier<ReadingModelIdentifier>();
   static final QueryField DEVICE_ID = QueryField(fieldName: "device_id");
   static final QueryField TIMESTAMP = QueryField(fieldName: "timestamp");
   static final QueryField TEMPERATURE = QueryField(fieldName: "temperature");
   static final QueryField MOISTURE = QueryField(fieldName: "moisture");
-  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+  static var schema =
+      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Reading";
     modelSchemaDefinition.pluralName = "Readings";
-    
+
     modelSchemaDefinition.authRules = [
-      AuthRule(
-        authStrategy: AuthStrategy.PUBLIC,
-        operations: const [
-          ModelOperation.CREATE,
-          ModelOperation.UPDATE,
-          ModelOperation.DELETE,
-          ModelOperation.READ
-        ])
+      AuthRule(authStrategy: AuthStrategy.PUBLIC, operations: const [
+        ModelOperation.CREATE,
+        ModelOperation.UPDATE,
+        ModelOperation.DELETE,
+        ModelOperation.READ
+      ])
     ];
-    
+
     modelSchemaDefinition.indexes = [
       ModelIndex(fields: const ["device_id", "timestamp"], name: null)
     ];
-    
+
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Reading.DEVICE_ID,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
+        key: Reading.DEVICE_ID,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Reading.TIMESTAMP,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.int)
-    ));
-    
+        key: Reading.TIMESTAMP,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.int)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Reading.TEMPERATURE,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.double)
-    ));
-    
+        key: Reading.TEMPERATURE,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.double)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Reading.MOISTURE,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.double)
-    ));
-    
+        key: Reading.MOISTURE,
+        isRequired: false,
+        ofType: ModelFieldType(ModelFieldTypeEnum.double)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
-      fieldName: 'createdAt',
-      isRequired: false,
-      isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
-    ));
-    
+        fieldName: 'createdAt',
+        isRequired: false,
+        isReadOnly: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)));
+
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
-      fieldName: 'updatedAt',
-      isRequired: false,
-      isReadOnly: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
-    ));
+        fieldName: 'updatedAt',
+        isRequired: false,
+        isReadOnly: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)));
   });
 }
 
 class _ReadingModelType extends ModelType<Reading> {
   const _ReadingModelType();
-  
+
   @override
   Reading fromJson(Map<String, dynamic> jsonData) {
     return Reading.fromJson(jsonData);
   }
-  
+
   @override
   String modelName() {
     return 'Reading';
@@ -257,41 +288,37 @@ class ReadingModelIdentifier implements ModelIdentifier<Reading> {
    * Create an instance of ReadingModelIdentifier using [device_id] the primary key.
    * And [timestamp] the sort key.
    */
-  const ReadingModelIdentifier({
-    required this.device_id,
-    required this.timestamp});
-  
+  const ReadingModelIdentifier(
+      {required this.device_id, required this.timestamp});
+
   @override
-  Map<String, dynamic> serializeAsMap() => (<String, dynamic>{
-    'device_id': device_id,
-    'timestamp': timestamp
-  });
-  
+  Map<String, dynamic> serializeAsMap() =>
+      (<String, dynamic>{'device_id': device_id, 'timestamp': timestamp});
+
   @override
   List<Map<String, dynamic>> serializeAsList() => serializeAsMap()
-    .entries
-    .map((entry) => (<String, dynamic>{ entry.key: entry.value }))
-    .toList();
-  
+      .entries
+      .map((entry) => (<String, dynamic>{entry.key: entry.value}))
+      .toList();
+
   @override
   String serializeAsString() => serializeAsMap().values.join('#');
-  
+
   @override
-  String toString() => 'ReadingModelIdentifier(device_id: $device_id, timestamp: $timestamp)';
-  
+  String toString() =>
+      'ReadingModelIdentifier(device_id: $device_id, timestamp: $timestamp)';
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
       return true;
     }
-    
+
     return other is ReadingModelIdentifier &&
-      device_id == other.device_id &&
-      timestamp == other.timestamp;
+        device_id == other.device_id &&
+        timestamp == other.timestamp;
   }
-  
+
   @override
-  int get hashCode =>
-    device_id.hashCode ^
-    timestamp.hashCode;
+  int get hashCode => device_id.hashCode ^ timestamp.hashCode;
 }

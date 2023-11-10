@@ -79,7 +79,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(top: constraints.maxHeight * 0.05),
+                      padding:
+                          EdgeInsets.only(top: constraints.maxHeight * 0.05),
                       child: SizedBox(
                         height: imageSize,
                         child: const Center(

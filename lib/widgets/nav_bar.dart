@@ -6,7 +6,7 @@ import 'package:smartlist/widgets/palatte.dart';
 import 'theme.dart';
 import 'themenotifier.dart';
 import '../user_provider.dart';
-import 'budgets.dart';
+import 'prev_lists.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({Key? key}) : super(key: key);
@@ -65,7 +65,8 @@ class _NavBarState extends State<NavBar> {
               child: Image.asset('assets/images/user.png'),
             ),
             accountName: null,
-            decoration: BoxDecoration(color: Color.fromARGB(255, 114, 147, 67)),
+            decoration:
+                const BoxDecoration(color: Color.fromARGB(255, 114, 147, 67)),
           ),
           ListTile(
             leading: const Icon(
@@ -92,7 +93,7 @@ class _NavBarState extends State<NavBar> {
               Icons.dark_mode,
               color: primaryColor,
             ),
-            title: Text('Dark Mode'),
+            title: const Text('Dark Mode'),
             trailing: Theme(
               data: Theme.of(context).copyWith(
                 switchTheme: SwitchThemeData(
@@ -128,17 +129,19 @@ class _NavBarState extends State<NavBar> {
               ),
             ),
           ),
-          // Add the "Budgets" page ListTile below
           ListTile(
             leading: const Icon(
-              Icons.money,
+              Icons.list_alt,
               color: primaryColor,
             ),
-            title: const Text('Budgets'),
+            title: const Text('Previous Lists'),
             onTap: () {
-              // Navigate to the "Budgets" page
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const BudgetPage()));
+              // Navigate to the "Previous Lists" page
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const PreviousListsPage('Your List Name')));
             },
           ),
         ],

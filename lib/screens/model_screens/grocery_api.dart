@@ -7,6 +7,7 @@ class Product {
   final String img;
   final String supermarket;
   int quantity;
+  bool isFavorite;
 
   Product({
     required this.product_name,
@@ -14,6 +15,7 @@ class Product {
     required this.img,
     required this.supermarket,
     this.quantity = 1,
+    this.isFavorite = false,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -59,7 +61,7 @@ class ProductService {
     final response = await http.get(
       uri,
       headers: {
-        'X-RapidAPI-Key': 'da74a0c4c9msh3767fd136826700p18f9dajsnb08dae65c8c2',
+        'X-RapidAPI-Key': 'c3f4e7f4b6msh9764251ee8fee71p1d1b1fjsn71822686827a',
         'X-RapidAPI-Host': 'igrosa-api.p.rapidapi.com',
       },
     );

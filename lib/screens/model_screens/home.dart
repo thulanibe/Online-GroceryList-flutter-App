@@ -37,7 +37,7 @@ class Category extends StatelessWidget {
                 context,
                 "Fruits & Vegetables",
                 'assets/images/F&V.jpg',
-                ProductList(
+                const ProductList(
                     category:
                         'vegetables'), // Navigate to ProductList for 'vegetables'
               ),
@@ -45,28 +45,28 @@ class Category extends StatelessWidget {
                 context,
                 "Meat",
                 'assets/images/Meat.jpg',
-                ProductList(
+                const ProductList(
                     category: 'meat'), // Navigate to ProductList for 'meat'
               ),
               _buildRoundedCardWithNavigation(
                 context,
                 "Beverages",
                 'assets/images/Beverages.jpg',
-                ProductList(
+                const ProductList(
                     category: 'drinks'), // Navigate to ProductList for 'drinks'
               ),
               _buildRoundedCardWithNavigation(
                 context,
                 "Bakery",
                 'assets/images/Bakery.jpg',
-                ProductList(
+                const ProductList(
                     category: 'bread'), // Navigate to ProductList for 'bread'
               ),
               _buildRoundedCardWithNavigation(
                 context,
                 "Personal Care",
                 'assets/images/bath-1253863_1280.jpg',
-                ProductList(
+                const ProductList(
                     category: 'snacks'), // Navigate to ProductList for 'snacks'
               ),
             ],

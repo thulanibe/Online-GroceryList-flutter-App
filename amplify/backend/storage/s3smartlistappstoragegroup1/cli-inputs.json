@@ -1,0 +1,12 @@
+{
+  "resourceName": "s3smartlistappstoragegroup1",
+  "bucketName": "smartlistapp-storage-group1",
+  "policyUUID": "2c65f0b1",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

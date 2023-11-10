@@ -4,6 +4,8 @@ import 'recipe_page.dart';
 import 'recipe_card.dart';
 
 class RecipePage extends StatefulWidget {
+  const RecipePage({super.key});
+
   @override
   _RecipePageState createState() => _RecipePageState();
 }
@@ -30,7 +32,7 @@ class _RecipePageState extends State<RecipePage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.green, // Set the app bar color to green
-          title: Row(
+          title: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.restaurant_menu),
@@ -40,7 +42,7 @@ class _RecipePageState extends State<RecipePage> {
           ),
         ),
         body: _isLoading
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
                 ),

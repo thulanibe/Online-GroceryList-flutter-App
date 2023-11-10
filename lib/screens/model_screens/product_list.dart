@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'product_service2.dart';
+import 'category_api.dart';
 import 'product_detail.dart';
 
 class ProductList extends StatefulWidget {
   final String category;
 
-  ProductList({required this.category});
+  const ProductList({super.key, required this.category});
 
   @override
   _ProductListState createState() => _ProductListState();
@@ -14,6 +14,7 @@ class ProductList extends StatefulWidget {
 class _ProductListState extends State<ProductList> {
   List<Product> products = [];
   final productService = ProductService();
+  Set<Product> cartItems = <Product>{};
 
   @override
   void initState() {
@@ -33,6 +34,13 @@ class _ProductListState extends State<ProductList> {
     }
   }
 
+  // Function to add a product to the cart
+  void addToCart(Product product) {
+    setState(() {
+      cartItems.add(product);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +49,7 @@ class _ProductListState extends State<ProductList> {
         backgroundColor: Colors.green,
       ),
       body: products.isEmpty
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
               ),
@@ -60,7 +68,11 @@ class _ProductListState extends State<ProductList> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProductDetail(product: product),
+                        builder: (context) => ProductDetail(
+                          product: product,
+                          onAddToCart: addToCart, // Pass the addToCart function
+                          cartItems: cartItems,
+                        ),
                       ),
                     );
                   },

@@ -2,38 +2,78 @@ import 'package:flutter/material.dart';
 import 'package:smartlist/screens/model_screens/home.dart';
 import 'recipe_home.dart';
 import 'grocery_page.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final List<String> images = [
+      'assets/images/card1.png',
+      'assets/images/card2.png',
+      'assets/images/card3.png',
+    ];
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _buildRoundedCard("Product", null), // No image for the first card
+              _buildRoundedCardWithImage("Discounts", images),
               _buildRoundedCardWithNavigation(
-                  context,
-                  "Category",
-                  'assets/images/Category.png',
-                  const Category()), // Navigate to CategoryPage
+                context,
+                "Category",
+                'assets/images/Category.png',
+                const Category(),
+              ),
               _buildRoundedCardWithNavigation(
-                  context,
-                  "List",
-                  'assets/images/CreateList.png',
-                  GroceryHome()), //Navigate to GroceryPage
+                context,
+                "List",
+                'assets/images/CreateList.png',
+                const GroceryHome(),
+              ),
               _buildRoundedCardWithNavigation(
-                  context,
-                  "Recipe",
-                  'assets/images/Recipe 1.jpg',
-                  RecipePage()), //Navigate to RecipePage
+                context,
+                "Recipe",
+                'assets/images/Recipe 1.jpg',
+                const RecipePage(),
+              ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildRoundedCardWithImage(String title, List<String> images) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      child: CarouselSlider(
+        items: images.map((image) {
+          return Builder(
+            builder: (BuildContext context) {
+              return _buildRoundedCardWithSingleImage(image);
+            },
+          );
+        }).toList(),
+        options: CarouselOptions(
+          height: 150, // Set the same height as other cards
+          autoPlay: true,
+          enlargeCenterPage: true,
+          viewportFraction: 0.8,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRoundedCardWithSingleImage(String image) {
+    return Image.asset(
+      image,
+      fit: BoxFit.cover,
     );
   }
 
@@ -99,17 +139,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
-// class CategoryPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Category Page"),
-//       ),
-//       body: Center(
-//         child: Text("This is the Category Page."),
-//       ),
-//     );
-//   }
-// }

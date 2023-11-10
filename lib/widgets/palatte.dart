@@ -15,8 +15,8 @@ const TextStyle kBodyButtonText = TextStyle(
 );
 
 const TextStyle kBodyText = TextStyle(
-  color: Colors.black,  // Set text color to black
-  fontSize: 16.0,  // Set your desired font size
+  color: Colors.black, // Set text color to black
+  fontSize: 16.0, // Set your desired font size
   // Other style properties...
 );
 const primaryColor = Colors.green;

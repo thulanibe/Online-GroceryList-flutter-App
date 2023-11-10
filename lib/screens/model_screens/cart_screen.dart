@@ -4,7 +4,7 @@ import 'grocery_api.dart';
 class CartScreen extends StatefulWidget {
   final Set<Product> cartItems;
 
-  CartScreen({required this.cartItems});
+  const CartScreen({super.key, required this.cartItems});
 
   @override
   _CartScreenState createState() => _CartScreenState();
@@ -51,25 +51,19 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _updateTotalCost();
-  }
-
   void _showSavedMessage() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("List Saved"),
-          content: Text("Your items have been saved."),
+          title: const Text("List Saved"),
+          content: const Text("Your items have been saved."),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("OK", style: TextStyle(color: Colors.green)),
+              child: const Text("OK", style: TextStyle(color: Colors.green)),
             ),
           ],
         );
@@ -79,18 +73,21 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Sort the cartItems list to show favorites at the top
+    final sortedCartItems = widget.cartItems.toList()
+      ..sort((a, b) => (b.isFavorite ? 1 : 0) - (a.isFavorite ? 1 : 0));
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cart'),
-        backgroundColor: Colors.green, // Set AppBar background color to green
-        iconTheme:
-            IconThemeData(color: Colors.white), // Set icon color to white
+        title: const Text('Cart'),
+        backgroundColor: Colors.green,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Column(
         children: <Widget>[
           Expanded(
             child: ListView(
-              children: widget.cartItems.map((item) {
+              children: sortedCartItems.map((item) {
                 return ListTile(
                   title: Text(item.product_name),
                   subtitle: Column(
@@ -100,12 +97,12 @@ class _CartScreenState extends State<CartScreen> {
                       Row(
                         children: [
                           IconButton(
-                            icon: Icon(Icons.remove),
+                            icon: const Icon(Icons.remove),
                             onPressed: () => _decreaseQuantity(item),
                           ),
                           Text('Quantity: ${item.quantity}'),
                           IconButton(
-                            icon: Icon(Icons.add),
+                            icon: const Icon(Icons.add),
                             onPressed: () => _increaseQuantity(item),
                           ),
                         ],
@@ -114,7 +111,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   leading: Image.network(item.img),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     onPressed: () => _removeItem(item),
                   ),
                 );
@@ -125,27 +122,25 @@ class _CartScreenState extends State<CartScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Text(
               'Total Cost: R${totalCost.toStringAsFixed(2)}',
-              style: TextStyle(color: Colors.grey), // Set text color to white
+              style: const TextStyle(color: Colors.grey),
             ),
           ),
-          if (widget.cartItems
-              .isNotEmpty) // Conditionally display the "Save Items" button
+          if (widget.cartItems.isNotEmpty)
             ElevatedButton(
               onPressed: () {
-                _showSavedMessage(); // Show the saved message
+                _showSavedMessage();
               },
-              child: Text(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+              ),
+              child: const Text(
                 'Save Items',
                 style: TextStyle(color: Colors.white),
-              ), // Set button text color to white
-              style: ElevatedButton.styleFrom(
-                primary: Colors.green, // Set button background color to green
               ),
             ),
         ],
       ),
-      backgroundColor:
-          Colors.white, // Set the background color of the page to white
+      backgroundColor: Colors.white,
     );
   }
 }

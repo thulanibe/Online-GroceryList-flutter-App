@@ -3,13 +3,16 @@ import 'cart_screen.dart';
 import 'grocery_api.dart';
 
 class GroceryHome extends StatefulWidget {
+  const GroceryHome({super.key});
+
   @override
   _GroceryHomeState createState() => _GroceryHomeState();
 }
 
 class _GroceryHomeState extends State<GroceryHome> {
   late Future<List<Product>?> futureProducts;
-  Set<Product> cartItems = Set<Product>();
+  Set<Product> cartItems = <Product>{};
+  Set<Product> favoriteItems = <Product>{};
   String searchText = '';
   bool isSearching = false;
 
@@ -38,7 +41,11 @@ class _GroceryHomeState extends State<GroceryHome> {
 
   void toggleFavorite(Product product) {
     setState(() {
-      product.isFavorite = !product.isFavorite;
+      if (favoriteItems.contains(product)) {
+        favoriteItems.remove(product);
+      } else {
+        favoriteItems.add(product);
+      }
     });
   }
 
@@ -55,7 +62,7 @@ class _GroceryHomeState extends State<GroceryHome> {
   void showItemAddedSnackBar() {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     scaffoldMessenger.showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Item added to the cart'),
       ),
     );
@@ -78,15 +85,15 @@ class _GroceryHomeState extends State<GroceryHome> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: isSearching ? buildSearchBar() : Text('Create List'),
+        title: isSearching ? buildSearchBar() : const Text('Create List'),
         actions: [
           if (isSearching)
             IconButton(
-              icon: Icon(Icons.cancel),
+              icon: const Icon(Icons.cancel),
               onPressed: endSearch,
             ),
           IconButton(
-            icon: Icon(Icons.shopping_cart),
+            icon: const Icon(Icons.shopping_cart),
             onPressed: () {
               openCartScreen(context);
             },
@@ -95,7 +102,7 @@ class _GroceryHomeState extends State<GroceryHome> {
         bottom: isSearching
             ? null
             : PreferredSize(
-                preferredSize: Size.fromHeight(56.0),
+                preferredSize: const Size.fromHeight(56.0),
                 child: buildSearchBar(),
               ),
       ),
@@ -104,7 +111,7 @@ class _GroceryHomeState extends State<GroceryHome> {
         future: futureProducts,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
               ),
@@ -112,7 +119,7 @@ class _GroceryHomeState extends State<GroceryHome> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No products available.'));
+            return const Center(child: Text('No products available.'));
           } else {
             final products = snapshot.data!;
             final filteredProducts = filterProducts(products, searchText);
@@ -157,9 +164,9 @@ class _GroceryHomeState extends State<GroceryHome> {
                                 addToCart(product);
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.green,
+                                backgroundColor: Colors.green,
                               ),
-                              child: Text(
+                              child: const Text(
                                 'Add to List',
                                 style: TextStyle(
                                   color: Colors.white,
@@ -187,7 +194,7 @@ class _GroceryHomeState extends State<GroceryHome> {
         filled: true,
         fillColor: Colors.white,
         suffixIcon: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.cancel,
             color: Colors.green,
           ),

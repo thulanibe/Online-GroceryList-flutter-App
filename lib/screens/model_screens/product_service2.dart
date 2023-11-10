@@ -1,25 +1,23 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class Product {
+class Product1 {
   final String product_name;
   final String price;
   final String img;
   final String supermarket;
   int quantity;
-  bool isFavorite;
 
-  Product({
+  Product1({
     required this.product_name,
     required this.price,
     required this.img,
     required this.supermarket,
     this.quantity = 1,
-    this.isFavorite = false,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
+  factory Product1.fromJson(Map<String, dynamic> json) {
+    return Product1(
       product_name: json['product_name'],
       price: json['price'],
       img: json['img'],
@@ -39,7 +37,7 @@ class Product {
 }
 
 class ProductService {
-  Future<List<Product>> getProducts(String category) async {
+  Future<List<Product1>> getProducts(String category) async {
     // Create a map of category names to API endpoints
     Map<String, String> categoryEndpoints = {
       'drinks': 'drinks',
@@ -68,10 +66,10 @@ class ProductService {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
-      final List<Product> list = [];
+      final List<Product1> list = [];
 
       for (var entry in data) {
-        list.add(Product.fromJson(entry));
+        list.add(Product1.fromJson(entry));
       }
       return list;
     } else {

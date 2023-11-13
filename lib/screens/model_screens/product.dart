@@ -4,6 +4,7 @@ class Product {
   final String img;
   final String supermarket;
   int quantity;
+  bool isFavorite;
 
   Product({
     required this.product_name,
@@ -11,6 +12,7 @@ class Product {
     required this.img,
     required this.supermarket,
     this.quantity = 1,
+    this.isFavorite = false,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {

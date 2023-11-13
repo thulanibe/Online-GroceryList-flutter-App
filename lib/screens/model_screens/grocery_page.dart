@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'cart_screen.dart';
 import 'grocery_api.dart';
+import 'cart_screen.dart';
 
 class GroceryHome extends StatefulWidget {
   const GroceryHome({super.key});
@@ -133,50 +133,47 @@ class _GroceryHomeState extends State<GroceryHome> {
                 final price = product.price.replaceFirst('R', '');
 
                 return Card(
-                  child: Column(
-                    children: [
-                      ListTile(
-                        title: Text(
-                          product.product_name,
-                          textAlign: TextAlign.left,
+                  child: ListTile(
+                    title: Text(
+                      product.product_name, // No fontWeight applied
+                    ),
+                    subtitle: Text(
+                      'R$price', // Updated here
+                      style: TextStyle(color: Colors.green),
+                    ),
+                    leading: Image.network(product.img, width: 80, height: 80),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            favoriteItems.contains(product)
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: favoriteItems.contains(product)
+                                ? Colors.red
+                                : null,
+                          ),
+                          onPressed: () {
+                            toggleFavorite(product);
+                          },
                         ),
-                        subtitle: Text(
-                          'Price: $price',
-                          textAlign: TextAlign.left,
-                        ),
-                        leading: Image.network(product.img),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: Icon(
-                                product.isFavorite
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: product.isFavorite ? Colors.red : null,
-                              ),
-                              onPressed: () {
-                                toggleFavorite(product);
-                              },
+                        ElevatedButton(
+                          onPressed: () {
+                            addToCart(product);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.green,
+                          ),
+                          child: const Text(
+                            'Add to List',
+                            style: TextStyle(
+                              color: Colors.white,
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                addToCart(product);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                              ),
-                              child: const Text(
-                                'Add to List',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
@@ -189,24 +186,23 @@ class _GroceryHomeState extends State<GroceryHome> {
 
   Widget buildSearchBar() {
     return TextField(
-      decoration: InputDecoration(
-        hintText: 'Search Items',
-        filled: true,
-        fillColor: Colors.white,
-        suffixIcon: IconButton(
-          icon: const Icon(
-            Icons.cancel,
-            color: Colors.green,
+        decoration: InputDecoration(
+          hintText: 'Search Items',
+          filled: true,
+          fillColor: Colors.white,
+          suffixIcon: IconButton(
+            icon: const Icon(
+              Icons.cancel,
+              color: Colors.green,
+            ),
+            onPressed: endSearch,
           ),
-          onPressed: endSearch,
         ),
-      ),
-      onChanged: (value) {
-        setState(() {
-          searchText = value;
+        onChanged: (value) {
+          setState(() {
+            searchText = value;
+          });
         });
-      },
-    );
   }
 
   void startSearch() {

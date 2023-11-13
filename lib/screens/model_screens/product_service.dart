@@ -43,7 +43,7 @@ class ProductService {
     final response = await http.get(
       Uri.parse('https://igrosa-api.p.rapidapi.com/balmoral/$query'),
       headers: {
-        'X-RapidAPI-Key': 'c3f4e7f4b6msh9764251ee8fee71p1d1b1fjsn71822686827a',
+        'X-RapidAPI-Key': 'ee1e28a5ccmshee57b4f1118087bp1047e5jsne2d7b0991043',
         'X-RapidAPI-Host': 'igrosa-api.p.rapidapi.com',
       },
     );

@@ -64,8 +64,8 @@ class Category extends StatelessWidget {
               ),
               _buildRoundedCardWithNavigation(
                 context,
-                "Personal Care",
-                'assets/images/bath-1253863_1280.jpg',
+                "Snacks",
+                'assets/images/snacks.jpg',
                 const ProductList(
                     category: 'snacks'), // Navigate to ProductList for 'snacks'
               ),

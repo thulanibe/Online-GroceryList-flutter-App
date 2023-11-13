@@ -8,11 +8,11 @@ class ProductDetail extends StatefulWidget {
   final Set<Product> cartItems;
 
   const ProductDetail({
-    super.key,
+    Key? key,
     required this.product,
     required this.onAddToCart,
     required this.cartItems,
-  });
+  }) : super(key: key);
 
   @override
   _ProductDetailState createState() => _ProductDetailState();
@@ -48,6 +48,7 @@ class _ProductDetailState extends State<ProductDetail> {
       supermarket: widget.product.supermarket,
       price: widget.product.price,
       img: widget.product.img,
+      isFavorite: isFavorite, // Include isFavorite status
     );
 
     widget.onAddToCart(productToAdd);
@@ -64,12 +65,12 @@ class _ProductDetailState extends State<ProductDetail> {
     );
   }
 
-  void navigateToCart(BuildContext context) {
+  void openCartScreen(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute<void>(
         builder: (BuildContext context) {
-          return CartScreen(cartItems: widget.cartItems);
+          return CartScreen(cartItems: widget.cartItems, key: GlobalKey());
         },
       ),
     );
@@ -89,12 +90,64 @@ class _ProductDetailState extends State<ProductDetail> {
         backgroundColor: Colors.green,
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.shopping_cart), // Add a shopping cart icon
-            onPressed: () => navigateToCart(context), // Navigate to CartScreen2
+            icon: const Icon(Icons.shopping_cart),
+            onPressed: () {
+              openCartScreen(context);
+            }, // Call the openCartScreen method
           ),
         ],
       ),
-      // ... rest of your widget build code
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Display the product details
+            Image.network(widget.product.img, width: 100, height: 100),
+            Text('Product: ${widget.product.product_name}'),
+            Text('Supermarket: ${widget.product.supermarket}'),
+            Text('Price: R$price'), // Updated here
+            Text('Quantity: $quantity'),
+            // Display a favorite button with a heart icon
+            IconButton(
+              icon: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: Colors.red,
+              ),
+              onPressed: toggleFavorite,
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.remove),
+                  onPressed: () {
+                    decrementQuantity();
+                  },
+                ),
+                Text('$quantity'),
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    incrementQuantity();
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: addToCart,
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+              ),
+              child: Text(
+                'Add to List',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

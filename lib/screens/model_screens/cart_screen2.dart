@@ -4,7 +4,7 @@ import 'category_api.dart';
 class CartScreen extends StatefulWidget {
   final Set<Product> cartItems;
 
-  const CartScreen({super.key, required this.cartItems});
+  CartScreen({required Key key, required this.cartItems}) : super(key: key);
 
   @override
   _CartScreenState createState() => _CartScreenState();
@@ -21,16 +21,25 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  void _changeQuantity(Product product, int change) {
+  void _increaseQuantity(Product product) {
     setState(() {
       final cartItem = widget.cartItems.firstWhere(
         (item) => item.product_name == product.product_name,
       );
-      cartItem.quantity += change;
-      if (cartItem.quantity < 1) {
-        cartItem.quantity = 1;
-      }
+      cartItem.quantity++;
       _updateTotalCost();
+    });
+  }
+
+  void _decreaseQuantity(Product product) {
+    setState(() {
+      final cartItem = widget.cartItems.firstWhere(
+        (item) => item.product_name == product.product_name,
+      );
+      if (cartItem.quantity > 1) {
+        cartItem.quantity--;
+        _updateTotalCost();
+      }
     });
   }
 
@@ -42,37 +51,17 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  void _showSavedMessage() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("List Saved"),
-          content: const Text("Your items have been saved."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("OK", style: TextStyle(color: Colors.green)),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _updateTotalCost();
-  }
-
   @override
   Widget build(BuildContext context) {
-    // Sort the cartItems list by product name
-    final sortedCartItems = widget.cartItems.toList()
-      ..sort((a, b) => a.product_name.compareTo(b.product_name));
+    final favoriteItems =
+        widget.cartItems.where((item) => item.isFavorite).toList();
+    final nonFavoriteItems =
+        widget.cartItems.where((item) => !item.isFavorite).toList();
+
+    favoriteItems.sort((a, b) => -1);
+    nonFavoriteItems.sort((a, b) => 1);
+
+    final sortedCartItems = [...favoriteItems, ...nonFavoriteItems];
 
     return Scaffold(
       appBar: AppBar(
@@ -90,17 +79,17 @@ class _CartScreenState extends State<CartScreen> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Price: R${item.price}'),
+                      Text('Price: R${item.price.replaceAll('R', '')}'),
                       Row(
                         children: [
                           IconButton(
                             icon: const Icon(Icons.remove),
-                            onPressed: () => _changeQuantity(item, -1),
+                            onPressed: () => _decreaseQuantity(item),
                           ),
                           Text('Quantity: ${item.quantity}'),
                           IconButton(
                             icon: const Icon(Icons.add),
-                            onPressed: () => _changeQuantity(item, 1),
+                            onPressed: () => _increaseQuantity(item),
                           ),
                         ],
                       ),
@@ -122,19 +111,6 @@ class _CartScreenState extends State<CartScreen> {
               style: const TextStyle(color: Colors.grey),
             ),
           ),
-          if (widget.cartItems.isNotEmpty)
-            ElevatedButton(
-              onPressed: () {
-                _showSavedMessage();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-              ),
-              child: const Text(
-                'Save Items',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
         ],
       ),
       backgroundColor: Colors.white,

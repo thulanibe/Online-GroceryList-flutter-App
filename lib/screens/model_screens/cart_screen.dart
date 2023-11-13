@@ -4,7 +4,7 @@ import 'grocery_api.dart';
 class CartScreen extends StatefulWidget {
   final Set<Product> cartItems;
 
-  const CartScreen({super.key, required this.cartItems});
+  const CartScreen({Key? key, required this.cartItems}) : super(key: key);
 
   @override
   _CartScreenState createState() => _CartScreenState();
@@ -14,10 +14,14 @@ class _CartScreenState extends State<CartScreen> {
   double totalCost = 0.0;
 
   void _updateTotalCost() {
-    totalCost = widget.cartItems.fold(0, (sum, item) {
-      final numericPrice =
-          double.tryParse(item.price.replaceAll('R', '').trim()) ?? 0.0;
-      return sum + numericPrice * item.quantity;
+    double tempTotal = 0.0;
+    widget.cartItems.forEach((item) {
+      final numericPrice = double.tryParse(item.price.substring(1)) ?? 0.0;
+      tempTotal += numericPrice * item.quantity;
+    });
+
+    setState(() {
+      totalCost = tempTotal;
     });
   }
 
@@ -73,9 +77,15 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Sort the cartItems list to show favorites at the top
-    final sortedCartItems = widget.cartItems.toList()
-      ..sort((a, b) => (b.isFavorite ? 1 : 0) - (a.isFavorite ? 1 : 0));
+    // Calculate the total cost as a double
+    final totalCostString =
+        'R${totalCost.toStringAsFixed(0)}'; // Format as "R50"
+
+    // Separate favorite and non-favorite items
+    final favoriteItems =
+        widget.cartItems.where((item) => item.isFavorite).toList();
+    final nonFavoriteItems =
+        widget.cartItems.where((item) => !item.isFavorite).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -87,42 +97,17 @@ class _CartScreenState extends State<CartScreen> {
         children: <Widget>[
           Expanded(
             child: ListView(
-              children: sortedCartItems.map((item) {
-                return ListTile(
-                  title: Text(item.product_name),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Price: R${item.price}'),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.remove),
-                            onPressed: () => _decreaseQuantity(item),
-                          ),
-                          Text('Quantity: ${item.quantity}'),
-                          IconButton(
-                            icon: const Icon(Icons.add),
-                            onPressed: () => _increaseQuantity(item),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  leading: Image.network(item.img),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => _removeItem(item),
-                  ),
-                );
-              }).toList(),
+              children: [
+                ...favoriteItems.map((item) => _buildCartItemTile(item)),
+                ...nonFavoriteItems.map((item) => _buildCartItemTile(item)),
+              ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Total Cost: R${totalCost.toStringAsFixed(2)}',
-              style: const TextStyle(color: Colors.grey),
+              'Total Cost: $totalCostString',
+              style: const TextStyle(color: Colors.green, fontSize: 20),
             ),
           ),
           if (widget.cartItems.isNotEmpty)
@@ -131,16 +116,57 @@ class _CartScreenState extends State<CartScreen> {
                 _showSavedMessage();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
+                primary: Colors.green,
               ),
               child: const Text(
                 'Save Items',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             ),
         ],
       ),
       backgroundColor: Colors.white,
+    );
+  }
+
+  Widget _buildCartItemTile(Product item) {
+    final price = 'R${(item.price.substring(1))}';
+    return Card(
+      child: ListTile(
+        title: Text(
+          item.product_name,
+          style: const TextStyle(
+            fontSize: 18,
+          ),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Price: $price',
+              style: const TextStyle(fontSize: 16),
+            ),
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.remove),
+                  onPressed: () => _decreaseQuantity(item),
+                ),
+                Text('Quantity: ${item.quantity}'),
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () => _increaseQuantity(item),
+                ),
+              ],
+            ),
+          ],
+        ),
+        leading: Image.network(item.img),
+        trailing: IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () => _removeItem(item),
+        ),
+      ),
     );
   }
 }

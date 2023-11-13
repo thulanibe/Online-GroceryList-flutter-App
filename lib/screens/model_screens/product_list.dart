@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'category_api.dart';
 import 'product_detail.dart';
+import 'category_api.dart';
 
 class ProductList extends StatefulWidget {
   final String category;
 
-  const ProductList({super.key, required this.category});
+  const ProductList({Key? key, required this.category}) : super(key: key);
 
   @override
   _ProductListState createState() => _ProductListState();
@@ -62,7 +62,8 @@ class _ProductListState extends State<ProductList> {
                   leading: Image.network(product.img, width: 100, height: 100),
                   title: Text(product.product_name),
                   subtitle: Text(product.supermarket),
-                  trailing: Text('R${product.price}'),
+                  trailing: Text(
+                      'R${product.price.replaceAll('R', '')}'), // Update here
                   onTap: () {
                     // Navigate to the product detail screen on tap
                     Navigator.push(

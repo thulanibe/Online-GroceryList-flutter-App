@@ -10,9 +10,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> images = [
-      'assets/images/card1.png',
+      'assets/images/deals.jpg',
       'assets/images/card2.png',
-      'assets/images/card3.png',
+      'assets/images/bev.jpg',
     ];
 
     return Scaffold(

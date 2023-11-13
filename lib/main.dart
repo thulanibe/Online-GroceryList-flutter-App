@@ -1,16 +1,20 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:smartlist/routes/routes.dart';
-import 'package:smartlist/user_provider.dart';
-import 'widgets/themenotifier.dart';
-import 'amplifyconfiguration.dart';
-import 'models/ModelProvider.dart';
-
 import 'package:provider/provider.dart';
+import 'package:smartlist/routes/routes.dart';
+import 'user_provider.dart';
+import 'widgets/themenotifier.dart';
+import 'models/ModelProvider.dart';
+import 'amplifyconfiguration.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _configureAmplify();
+
   runApp(
     MultiProvider(
       providers: [
@@ -26,6 +30,27 @@ void main() {
   );
 }
 
+Future<void> _configureAmplify() async {
+  try {
+    // Initialize Cognito
+    final auth = AmplifyAuthCognito();
+    // Add Cognito plugin to amplify
+    await Amplify.addPlugin(auth);
+
+    // Initialize GraphQL API model provider
+    final api = AmplifyAPI(modelProvider: ModelProvider.instance);
+    // Add GraphQL API model provider plugin to amplify
+    await Amplify.addPlugin(api);
+
+    // Call Amplify.configure to use the initialized categories in your app
+    await Amplify.configure(amplifyconfig);
+
+    safePrint('Amplify Configured');
+  } on Exception catch (e) {
+    safePrint('An error occurred configuring Amplify: $e');
+  }
+}
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -35,35 +60,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   bool isSignedIn = false;
-  String initialRoute = '/WelcomeScreen';
+  String initialRoute = '/SplashScreen';
 
   @override
   void initState() {
     super.initState();
-    _configureAmplify();
-  }
-
-  Future<void> _configureAmplify() async {
-    try {
-      // Initialize Cognito
-      final auth = AmplifyAuthCognito();
-      // Add Cognito plugin to amplify
-      await Amplify.addPlugin(auth);
-
-      // Initialize GraphQL API model provider
-      final api = AmplifyAPI(modelProvider: ModelProvider.instance);
-      // Add GraphQL API model provider plugin to amplify
-      await Amplify.addPlugin(api);
-
-      // Call Amplify.configure to use the initialized categories in your app
-      await Amplify.configure(amplifyconfig);
-
-      safePrint('Amplify Configured');
-    } on Exception catch (e) {
-      safePrint('An error occurred configuring Amplify: $e');
-    } finally {
-      checkAuthSession();
-    }
+    checkAuthSession();
   }
 
   Future<void> checkAuthSession() async {

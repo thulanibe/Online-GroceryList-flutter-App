@@ -53,7 +53,7 @@ class _GroceryHomeState extends State<GroceryHome> {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (BuildContext context) {
-          return CartScreen(cartItems: cartItems);
+          return CartScreen(key: const Key('unique_key'), cartItems: cartItems);
         },
       ),
     );

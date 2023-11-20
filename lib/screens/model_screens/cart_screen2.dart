@@ -13,6 +13,18 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   double totalCost = 0.0;
 
+  @override
+  void initState() {
+    super.initState();
+    _updateTotalCost();
+  }
+
+  @override
+  void didUpdateWidget(covariant CartScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _updateTotalCost();
+  }
+
   void _updateTotalCost() {
     totalCost = widget.cartItems.fold(0, (sum, item) {
       final numericPrice =
@@ -49,6 +61,26 @@ class _CartScreenState extends State<CartScreen> {
           .removeWhere((item) => item.product_name == product.product_name);
       _updateTotalCost();
     });
+  }
+
+  void _showSavedMessage() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("List Saved"),
+          content: Text("Your items have been saved."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK", style: TextStyle(color: Colors.green)),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -111,6 +143,24 @@ class _CartScreenState extends State<CartScreen> {
               style: const TextStyle(color: Colors.grey),
             ),
           ),
+          if (widget.cartItems.isNotEmpty)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16.0),
+              color: Colors.green,
+              child: ElevatedButton(
+                onPressed: () {
+                  _showSavedMessage();
+                },
+                child: Text(
+                  'Save Items',
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                ),
+              ),
+            ),
         ],
       ),
       backgroundColor: Colors.white,

@@ -1,25 +1,10 @@
 {
   "api": {
     "smartlistapp": {
-      "dependsOn": [
-        {
-          "attributes": [
-            "UserPoolId"
-          ],
-          "category": "auth",
-          "resourceName": "smartlistapp71fa9b1b"
-        }
-      ],
+      "dependsOn": [],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authsmartlistapp71fa9b1b"
-              }
-            }
-          ],
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
             "apiKeyConfig": {
               "apiKeyExpirationDays": 7
@@ -33,7 +18,7 @@
     }
   },
   "auth": {
-    "smartlistapp71fa9b1b": {
+    "smartlistApp": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -42,12 +27,15 @@
           "SMS"
         ],
         "passwordProtectionSettings": {
-          "passwordPolicyCharacters": [],
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ],
           "passwordPolicyMinLength": 8
         },
-        "signupAttributes": [
-          "EMAIL"
-        ],
+        "signupAttributes": [],
         "socialProviders": [],
         "usernameAttributes": [
           "EMAIL"
@@ -60,48 +48,8 @@
       "service": "Cognito"
     }
   },
-  "function": {
-    "SmartList1Triggere0c40a2a": {
-      "build": true,
-      "dependsOn": [
-        {
-          "attributes": [
-            "Name",
-            "Arn",
-            "StreamArn"
-          ],
-          "category": "storage",
-          "resourceName": "SmartList1"
-        }
-      ],
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_function_SmartList1Triggere0c40a2a_deploymentBucketName": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "SmartList1Triggere0c40a2a"
-        }
-      ]
-    },
-    "AMPLIFY_function_SmartList1Triggere0c40a2a_s3Key": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "SmartList1Triggere0c40a2a"
-        }
-      ]
-    }
-  },
   "storage": {
-    "SmartList1": {
-      "providerPlugin": "awscloudformation",
-      "service": "DynamoDB"
-    },
-    "s3smartlistappstoragegroup1": {
+    "s3smartlistappstorage1c31b190": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"

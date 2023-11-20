@@ -1,30 +1,7 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(
-    const MaterialApp(
-      home: MyApp(),
-    ),
-  );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Saved Lists', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.green,
-      ),
-      body: const SavedListsPage(),
-    );
-  }
-}
-
 class SavedListsPage extends StatefulWidget {
-  const SavedListsPage({super.key});
+  SavedListsPage({Key? key}) : super(key: key);
 
   @override
   _SavedListsPageState createState() => _SavedListsPageState();
@@ -33,105 +10,224 @@ class SavedListsPage extends StatefulWidget {
 class _SavedListsPageState extends State<SavedListsPage> {
   final List<String> savedLists = ['List A', 'List B', 'List C'];
 
+  void _deleteList(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete List'),
+          content:
+              Text('Are you sure you want to delete ${savedLists[index]}?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  savedLists.removeAt(index);
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _renameList(int index) {
+    TextEditingController _listNameController = TextEditingController();
+    _listNameController.text = savedLists[index];
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Rename List'),
+          content: TextField(
+            controller: _listNameController,
+            decoration: InputDecoration(labelText: 'New List Name'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                String editedListName = _listNameController.text.trim();
+                if (editedListName.isNotEmpty) {
+                  setState(() {
+                    savedLists[index] = editedListName;
+                  });
+                }
+                Navigator.of(context).pop();
+              },
+              child: Text('Rename'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Saved Lists', style: TextStyle(color: Colors.white)),
+        title: Text('Saved Lists', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.green,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              // Add functionality for adding a new list
+            },
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: savedLists.length,
         itemBuilder: (context, index) {
           return ListTile(
-            leading: const Icon(
+            tileColor: Colors.grey[200], // Background color
+            leading: Icon(
               Icons.list,
               color: Colors.green,
             ),
-            title: Text(savedLists[index],
-                style: const TextStyle(color: Colors.black)),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PreviousListsPage(savedLists[index]),
-                ),
-              );
-            },
+            title: Text(savedLists[index]),
+            trailing: PopupMenuButton(
+              itemBuilder: (BuildContext context) {
+                return [
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Text('Delete'),
+                  ),
+                  PopupMenuItem(
+                    value: 'rename',
+                    child: Text('Rename'),
+                  ),
+                ];
+              },
+              onSelected: (String value) {
+                if (value == 'delete') {
+                  _deleteList(index);
+                } else if (value == 'rename') {
+                  _renameList(index);
+                }
+              },
+            ),
           );
         },
-      ),
-      bottomNavigationBar: Row(
-        children: [
-          IconButton(
-            icon: const Icon(
-              Icons.add,
-              color: Colors.green,
-            ),
-            onPressed: () {
-              // Implement the functionality to add a new list
-              // For example, show a dialog to enter the list name.
-            },
-          ),
-          const Spacer(), // Adds space between the icons
-          IconButton(
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
-            ),
-            onPressed: () {
-              // Implement the functionality to delete the list
-              // For example, show a dialog for deleting the list.
-            },
-          ),
-        ],
       ),
     );
   }
 }
 
-class PreviousListsPage extends StatelessWidget {
+class PreviousListsPage extends StatefulWidget {
   final String listName;
 
   const PreviousListsPage(this.listName, {Key? key}) : super(key: key);
 
   @override
+  _PreviousListsPageState createState() => _PreviousListsPageState();
+}
+
+class _PreviousListsPageState extends State<PreviousListsPage> {
+  late TextEditingController _listNameController;
+  late String _editedListName;
+
+  @override
+  void initState() {
+    super.initState();
+    _listNameController = TextEditingController(text: widget.listName);
+    _editedListName = widget.listName;
+  }
+
+  void _editListName() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Edit List Name'),
+          content: TextField(
+            controller: _listNameController,
+            decoration: InputDecoration(labelText: 'List Name'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                String editedListName = _listNameController.text.trim();
+                if (editedListName.isNotEmpty) {
+                  setState(() {
+                    _editedListName = editedListName;
+                  });
+                }
+                Navigator.of(context).pop();
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List Details: $listName',
-            style: const TextStyle(color: Colors.white)),
+        title: Text('Prev Lists: $_editedListName',
+            style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.green,
       ),
       body: Center(
-        child: Text('Details for $listName',
-            style: const TextStyle(color: Colors.black)),
+        child: Text('Details for $_editedListName',
+            style: TextStyle(color: Colors.black)),
       ),
-      bottomNavigationBar: Row(
-        children: [
-          IconButton(
-            icon: const Icon(
-              Icons.edit,
-              color: Colors.green,
-            ),
-            onPressed: () {
-              // Implement the functionality to edit the list
-              // For example, allow the user to update list details.
-            },
+      bottomNavigationBar: ListTile(
+        leading: IconButton(
+          icon: Icon(
+            Icons.edit,
+            color: Colors.green,
           ),
-          const Spacer(), // Adds space between the icons
-          IconButton(
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
-            ),
-            onPressed: () {
-              // Implement the functionality to delete the list
-              // For example, show a dialog for deleting the list.
-            },
+          onPressed: () {
+            _editListName();
+          },
+        ),
+        title: Spacer(),
+        trailing: IconButton(
+          icon: Icon(
+            Icons.delete,
+            color: Colors.red,
           ),
-        ],
+          onPressed: () {
+            // Implement the functionality to delete the list
+            // For example, show a dialog for deleting the list.
+          },
+        ),
       ),
     );
   }
+}
+
+void main() {
+  runApp(
+    MaterialApp(
+      home: SavedListsPage(),
+    ),
+  );
 }

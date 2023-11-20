@@ -41,12 +41,42 @@
         "CRUD": {},
         "SmartList1Triggere0c40a2a": {
           "deploymentBucketName": "amplify-smartlistapp-main-154825-deployment",
-          "s3Key": "amplify-builds/SmartList1Triggere0c40a2a-77365254472b5156336a-build.zip"
-        }
+          "s3Key": "amplify-builds/SmartList1Triggere0c40a2a-7a5469626d7458374c33-build.zip"
+        },
+        "SmartList1": {}
       },
       "storage": {
         "s3smartlistappstoragegroup1": {},
         "SmartList1": {}
+      }
+    }
+  },
+  "ddev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-smartlistapp-ddev-121216-authRole",
+      "UnauthRoleArn": "arn:aws:iam::456561060854:role/amplify-smartlistapp-ddev-121216-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::456561060854:role/amplify-smartlistapp-ddev-121216-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-smartlistapp-ddev-121216-deployment",
+      "UnauthRoleName": "amplify-smartlistapp-ddev-121216-unauthRole",
+      "StackName": "amplify-smartlistapp-ddev-121216",
+      "StackId": "arn:aws:cloudformation:us-east-1:456561060854:stack/amplify-smartlistapp-ddev-121216/cd8a51f0-8531-11ee-adec-0a7db9ac5451",
+      "AmplifyAppId": "dcukiflm6p3l6"
+    },
+    "categories": {
+      "auth": {
+        "smartlistapp71fa9b1b": {},
+        "smartlistApp": {}
+      },
+      "function": {
+        "SmartList1Triggere0c40a2a": {},
+        "SmartList1": {}
+      },
+      "api": {
+        "smartlistapp": {}
+      },
+      "storage": {
+        "s3smartlistappstorage1c31b190": {}
       }
     }
   }

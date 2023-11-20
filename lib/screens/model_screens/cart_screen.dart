@@ -4,7 +4,7 @@ import 'grocery_api.dart';
 class CartScreen extends StatefulWidget {
   final Set<Product> cartItems;
 
-  const CartScreen({Key? key, required this.cartItems}) : super(key: key);
+  CartScreen({required Key key, required this.cartItems}) : super(key: key);
 
   @override
   _CartScreenState createState() => _CartScreenState();
@@ -13,15 +13,23 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   double totalCost = 0.0;
 
-  void _updateTotalCost() {
-    double tempTotal = 0.0;
-    widget.cartItems.forEach((item) {
-      final numericPrice = double.tryParse(item.price.substring(1)) ?? 0.0;
-      tempTotal += numericPrice * item.quantity;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _updateTotalCost();
+  }
 
-    setState(() {
-      totalCost = tempTotal;
+  @override
+  void didUpdateWidget(covariant CartScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _updateTotalCost();
+  }
+
+  void _updateTotalCost() {
+    totalCost = widget.cartItems.fold(0, (sum, item) {
+      final numericPrice =
+          double.tryParse(item.price.replaceAll('R', '').trim()) ?? 0.0;
+      return sum + numericPrice * item.quantity;
     });
   }
 
@@ -60,14 +68,14 @@ class _CartScreenState extends State<CartScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("List Saved"),
-          content: const Text("Your items have been saved."),
+          title: Text("List Saved"),
+          content: Text("Your items have been saved."),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text("OK", style: TextStyle(color: Colors.green)),
+              child: Text("OK", style: TextStyle(color: Colors.green)),
             ),
           ],
         );
@@ -77,15 +85,15 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate the total cost as a double
-    final totalCostString =
-        'R${totalCost.toStringAsFixed(0)}'; // Format as "R50"
-
-    // Separate favorite and non-favorite items
     final favoriteItems =
         widget.cartItems.where((item) => item.isFavorite).toList();
     final nonFavoriteItems =
         widget.cartItems.where((item) => !item.isFavorite).toList();
+
+    favoriteItems.sort((a, b) => -1);
+    nonFavoriteItems.sort((a, b) => 1);
+
+    final sortedCartItems = [...favoriteItems, ...nonFavoriteItems];
 
     return Scaffold(
       appBar: AppBar(
@@ -97,76 +105,65 @@ class _CartScreenState extends State<CartScreen> {
         children: <Widget>[
           Expanded(
             child: ListView(
-              children: [
-                ...favoriteItems.map((item) => _buildCartItemTile(item)),
-                ...nonFavoriteItems.map((item) => _buildCartItemTile(item)),
-              ],
+              children: sortedCartItems.map((item) {
+                return ListTile(
+                  title: Text(item.product_name),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Price: R${item.price.replaceAll('R', '')}'),
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.remove),
+                            onPressed: () => _decreaseQuantity(item),
+                          ),
+                          Text('Quantity: ${item.quantity}'),
+                          IconButton(
+                            icon: const Icon(Icons.add),
+                            onPressed: () => _increaseQuantity(item),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  leading: Image.network(item.img),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () => _removeItem(item),
+                  ),
+                );
+              }).toList(),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Total Cost: $totalCostString',
-              style: const TextStyle(color: Colors.green, fontSize: 20),
+              'Total Cost: R${totalCost.toStringAsFixed(2)}',
+              style: const TextStyle(color: Colors.grey),
             ),
           ),
           if (widget.cartItems.isNotEmpty)
-            ElevatedButton(
-              onPressed: () {
-                _showSavedMessage();
-              },
-              style: ElevatedButton.styleFrom(
-                primary: Colors.green,
-              ),
-              child: const Text(
-                'Save Items',
-                style: TextStyle(color: Colors.white, fontSize: 18),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16.0),
+              color: Colors.green,
+              child: ElevatedButton(
+                onPressed: () {
+                  _showSavedMessage();
+                },
+                child: Text(
+                  'Save Items',
+                  style: TextStyle(color: Colors.white),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                ),
               ),
             ),
         ],
       ),
       backgroundColor: Colors.white,
-    );
-  }
-
-  Widget _buildCartItemTile(Product item) {
-    final price = 'R${(item.price.substring(1))}';
-    return Card(
-      child: ListTile(
-        title: Text(
-          item.product_name,
-          style: const TextStyle(
-            fontSize: 18,
-          ),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Price: $price',
-              style: const TextStyle(fontSize: 16),
-            ),
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.remove),
-                  onPressed: () => _decreaseQuantity(item),
-                ),
-                Text('Quantity: ${item.quantity}'),
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: () => _increaseQuantity(item),
-                ),
-              ],
-            ),
-          ],
-        ),
-        leading: Image.network(item.img),
-        trailing: IconButton(
-          icon: const Icon(Icons.delete),
-          onPressed: () => _removeItem(item),
-        ),
-      ),
     );
   }
 }

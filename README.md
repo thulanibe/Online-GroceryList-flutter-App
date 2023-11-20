@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # front_end
 
 A new Flutter project.
@@ -19,3 +20,7 @@ samples, guidance on mobile development, and a full API reference.
 # Smartlist-App
 Web App
 >>>>>>> origin/main
+=======
+# Online-GroceryList-flutter-App
+Online-GroceryList-flutter App
+>>>>>>> 7e10910d7fd2a4cd0171e4524d382460feb61ed8
